@@ -1,0 +1,10 @@
+[Unit]
+Description=Run Culi staging backup prune daily
+
+[Timer]
+OnCalendar=*-*-* 03:45:00 UTC
+Persistent=true
+Unit=culi-staging-backup-prune.service
+
+[Install]
+WantedBy=timers.target

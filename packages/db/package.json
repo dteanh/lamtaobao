@@ -1,0 +1,22 @@
+{
+  "name": "@culi/db",
+  "private": true,
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "db:generate": "../../scripts/load-env.sh prisma generate --schema prisma/schema.prisma",
+    "db:migrate": "../../scripts/load-env.sh prisma migrate dev --schema prisma/schema.prisma --name init",
+    "db:migrate:deploy": "../../scripts/load-env.sh prisma migrate deploy --schema prisma/schema.prisma",
+    "db:push": "../../scripts/load-env.sh prisma db push --schema prisma/schema.prisma --accept-data-loss",
+    "db:seed": "../../scripts/load-env.sh node prisma/seed.js",
+    "lint": "echo lint-db",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.19.2"
+  },
+  "devDependencies": {
+    "prisma": "^6.19.2"
+  }
+}

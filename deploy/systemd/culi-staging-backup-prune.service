@@ -1,0 +1,11 @@
+[Unit]
+Description=Culi Staging Backup Prune
+After=network.target
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/culi-commerce
+Environment=KEEP=7
+ExecStart=/opt/culi-commerce/deploy/backup-prune.sh
+User=root
+Group=root

@@ -1,0 +1,10 @@
+[Unit]
+Description=Culi Staging Backup
+After=network.target postgresql.service
+
+[Service]
+Type=oneshot
+WorkingDirectory=/opt/culi-commerce
+ExecStart=/opt/culi-commerce/deploy/backup-staging.sh
+User=root
+Group=root

@@ -1,0 +1,15 @@
+{
+  "name": "@culi/core",
+  "private": true,
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "lint": "echo lint-core",
+    "typecheck": "tsc --noEmit"
+  },
+  "dependencies": {
+    "@culi/db": "workspace:*",
+    "@culi/theme-sdk": "workspace:*"
+  }
+}

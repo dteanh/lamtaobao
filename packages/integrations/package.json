@@ -1,0 +1,11 @@
+{
+  "name": "@culi/integrations",
+  "private": true,
+  "version": "0.1.0",
+  "main": "src/index.ts",
+  "types": "src/index.ts",
+  "scripts": {
+    "lint": "echo lint-integrations",
+    "typecheck": "tsc --noEmit"
+  }
+}

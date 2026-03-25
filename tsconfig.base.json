@@ -1,0 +1,29 @@
+{
+  "compilerOptions": {
+    "target": "ES2022",
+    "lib": ["ES2022", "DOM", "DOM.Iterable"],
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "allowJs": false,
+    "strict": true,
+    "noEmit": true,
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "isolatedModules": true,
+    "skipLibCheck": true,
+    "baseUrl": ".",
+    "jsx": "preserve",
+    "types": ["node", "react", "react-dom"],
+    "paths": {
+      "@culi/config/*": ["packages/config/src/*"],
+      "@culi/core": ["packages/core/src/index.ts"],
+      "@culi/core/*": ["packages/core/src/*"],
+      "@culi/db": ["packages/db/src/index.ts"],
+      "@culi/db/*": ["packages/db/src/*"],
+      "@culi/theme-sdk": ["packages/theme-sdk/src/index.ts"],
+      "@culi/theme-sdk/*": ["packages/theme-sdk/src/*"],
+      "@culi/ui/*": ["packages/ui/src/*"],
+      "@culi/integrations/*": ["packages/integrations/src/*"]
+    }
+  }
+}

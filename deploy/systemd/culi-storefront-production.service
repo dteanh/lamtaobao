@@ -1,0 +1,22 @@
+[Unit]
+Description=Culi Storefront Production
+After=network.target postgresql.service nginx.service
+
+[Service]
+Type=simple
+WorkingDirectory=/opt/culi-commerce
+EnvironmentFile=/opt/culi-commerce/.env.production
+Environment=NODE_ENV=production
+Environment=HOSTNAME=127.0.0.1
+Environment=PORT=3000
+Environment=XDG_CACHE_HOME=/opt/culi-commerce/.cache
+Environment=COREPACK_HOME=/opt/culi-commerce/.cache/corepack
+Environment=PNPM_HOME=/opt/culi-commerce/.cache/pnpm
+ExecStart=/bin/bash -lc 'cd /opt/culi-commerce && /usr/bin/pnpm --filter @culi/storefront-default start -- --hostname 127.0.0.1 --port 3000'
+Restart=always
+RestartSec=5
+User=www-data
+Group=www-data
+
+[Install]
+WantedBy=multi-user.target

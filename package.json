@@ -1,0 +1,36 @@
+{
+  "name": "culi-commerce-platform",
+  "private": true,
+  "version": "0.1.0",
+  "packageManager": "pnpm@10.0.0",
+  "scripts": {
+    "dev": "turbo dev",
+    "build": "turbo build",
+    "lint": "turbo lint",
+    "typecheck": "turbo typecheck",
+    "db:generate": "pnpm --filter @culi/db db:generate",
+    "db:migrate": "pnpm --filter @culi/db db:migrate",
+    "db:migrate:deploy": "pnpm --filter @culi/db db:migrate:deploy",
+    "db:push": "pnpm --filter @culi/db db:push",
+    "db:deploy-staging": "ENV_FILE=.env.production pnpm db:generate && ENV_FILE=.env.production pnpm db:migrate:deploy",
+    "db:seed": "pnpm --filter @culi/db db:seed",
+    "release:production-grade": "ENV_FILE=.env.production ./scripts/release-production-grade.sh",
+    "test": "sh -lc 'set -a; [ -f .env ] && . ./.env; set +a; tsx --test tests/**/*.test.ts'",
+    "cleanup:reservations": "sh -lc 'set -a; [ -f .env ] && . ./.env; set +a; tsx scripts/cleanup-expired-reservations.ts'",
+    "test:e2e": "sh -lc 'set -a; [ -f .env ] && . ./.env; set +a; tsx --test tests/integration.e2e.test.ts'",
+    "test:admin-crud": "sh -lc 'set -a; [ -f .env ] && . ./.env; set +a; tsx --test tests/admin-crud.e2e.test.ts'"
+  },
+  "devDependencies": {
+    "@types/node": "^22.13.10",
+    "@types/react": "^19.2.14",
+    "@types/react-dom": "^19.2.3",
+    "bcryptjs": "^3.0.3",
+    "next": "15",
+    "react": "19",
+    "react-dom": "19",
+    "tsx": "^4.21.0",
+    "turbo": "^2.0.0",
+    "typescript": "^5.6.3",
+    "zod": "^4.3.6"
+  }
+}
