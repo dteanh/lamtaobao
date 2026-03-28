@@ -17,6 +17,9 @@ function stateBadgeStyle(kind: 'order' | 'payment', value: string) {
   return { background: '#f8fafc', color: '#475569', border: '1px solid #cbd5e1' };
 }
 
+type CustomerOrderView = NonNullable<Awaited<ReturnType<typeof getCustomerOrderView>>>;
+type CustomerOrderItem = CustomerOrderView['items'][number];
+
 export default async function CustomerOrderPage({ params, searchParams }: { params: Promise<{ id: string }>; searchParams: Promise<{ token?: string }> }) {
   const { id } = await params;
   const query = await searchParams;
@@ -80,7 +83,7 @@ export default async function CustomerOrderPage({ params, searchParams }: { para
             </div>
 
             <div style={{ borderTop: '2px solid #111827' }}>
-              {order.items.map((item) => (
+              {order.items.map((item: CustomerOrderItem) => (
                 <div
                   key={item.id}
                   style={{
