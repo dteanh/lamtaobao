@@ -1,6 +1,11 @@
 import type { CartSummary } from '@culi/theme-sdk/contracts';
 import { prisma } from '@culi/db';
 import { formatMoney } from '../pricing/money';
+
+type TxClient = {
+  inventory: typeof prisma.inventory;
+  inventoryReservation: typeof prisma.inventoryReservation;
+};
 import { err, ok, type AppResult } from '../shared/result';
 import {
   cleanupExpiredReservations,
@@ -41,7 +46,7 @@ export async function reserveCartInventory(token: string, requestId = `reserve_$
     }
   }
 
-  await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx: TxClient) => {
     for (const item of cart.items) {
       const existing = await tx.inventoryReservation.findFirst({ where: { cartToken: token, productId: item.product.id } });
       const currentReserved = existing?.quantity ?? 0;
@@ -73,7 +78,7 @@ export async function releaseCartInventoryReservation(token: string, requestId =
   const reservations = await prisma.inventoryReservation.findMany({ where: { cartToken: token } });
   if (reservations.length === 0) return;
 
-  await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx: TxClient) => {
     for (const reservation of reservations) {
       const inventory = await tx.inventory.findUnique({ where: { productId: reservation.productId } });
       await tx.inventory.updateMany({ where: { productId: reservation.productId }, data: { reserved: { decrement: reservation.quantity } } });
