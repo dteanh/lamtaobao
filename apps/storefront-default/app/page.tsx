@@ -1,18 +1,184 @@
 export const dynamic = 'force-dynamic';
 
-import { getCatalogCollection } from '@culi/core/catalog';
+import { getCatalogCollection, type ProductRecord, mapProductSummary } from '@culi/core/catalog';
 import { getCategorySummaries } from '@culi/core/categories';
+import type { CollectionPageData } from '@culi/theme-sdk/contracts';
 import { SiteFooter, SiteHeader } from './_components/site-shell';
+
+const fallbackProducts: ProductRecord[] = [
+  {
+    id: 'fallback-1',
+    slug: 'serveq-signature-cookie',
+    title: '서브큐 시그니처 쿠키',
+    excerpt: '매장 운영에 잘 맞는 대표 디저트',
+    description: '고소하고 진한 풍미의 대표 디저트 상품입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '12900',
+    salePrice: '9900',
+    images: [{ url: 'https://images.unsplash.com/photo-1499636136210-6f4ee915583e?auto=format&fit=crop&w=1200&q=80', alt: 'cookie', position: 0 }],
+    inventory: { quantity: 120, reserved: 8, policy: 'ALLOW_BACKORDER', lowStockLevel: 10 },
+    categories: [{ category: { id: 'cat-bakery', slug: 'bakery', name: '베이커리' } }],
+  },
+  {
+    id: 'fallback-2',
+    slug: 'serveq-classic-scone',
+    title: '클래식 버터 스콘',
+    excerpt: '겉바속촉 매장 인기 메뉴',
+    description: '카페 디저트 진열에 잘 맞는 인기 스콘입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '9900',
+    salePrice: '7900',
+    images: [{ url: 'https://images.unsplash.com/photo-1519864600265-abb23847ef2c?auto=format&fit=crop&w=1200&q=80', alt: 'scone', position: 0 }],
+    inventory: { quantity: 80, reserved: 4, policy: 'ALLOW_BACKORDER', lowStockLevel: 8 },
+    categories: [{ category: { id: 'cat-dessert', slug: 'dessert', name: '디저트' } }],
+  },
+  {
+    id: 'fallback-3',
+    slug: 'serveq-dessert-selection',
+    title: '디저트 셀렉션 박스',
+    excerpt: '카페 운영용 추천 구성',
+    description: '대표 디저트를 한 번에 구성한 기획 상품입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '18900',
+    salePrice: '15900',
+    images: [{ url: 'https://images.unsplash.com/photo-1551024506-0bccd828d307?auto=format&fit=crop&w=1200&q=80', alt: 'dessert', position: 0 }],
+    inventory: { quantity: 64, reserved: 2, policy: 'ALLOW_BACKORDER', lowStockLevel: 6 },
+    categories: [{ category: { id: 'cat-cafe', slug: 'cafe', name: '카페재료' } }],
+  },
+  {
+    id: 'fallback-4',
+    slug: 'serveq-box-special',
+    title: '박스 특가 세트',
+    excerpt: '대량 구매용 인기 구성',
+    description: '매장 재고 운영에 맞춘 박스 특가 세트입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '24900',
+    salePrice: '21900',
+    images: [{ url: 'https://images.unsplash.com/photo-1509440159596-0249088772ff?auto=format&fit=crop&w=1200&q=80', alt: 'bread', position: 0 }],
+    inventory: { quantity: 45, reserved: 3, policy: 'ALLOW_BACKORDER', lowStockLevel: 5 },
+    categories: [{ category: { id: 'cat-box', slug: 'box-sale', name: '박스특가' } }],
+  },
+  {
+    id: 'fallback-5',
+    slug: 'serveq-frozen-bakery',
+    title: '냉동 베이커리 셀렉션',
+    excerpt: '보관과 출고가 쉬운 운영형 상품',
+    description: '냉동 보관 후 빠르게 제공 가능한 상품입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '16900',
+    salePrice: '13900',
+    images: [{ url: 'https://images.unsplash.com/photo-1517433670267-08bbd4be890f?auto=format&fit=crop&w=1200&q=80', alt: 'frozen bakery', position: 0 }],
+    inventory: { quantity: 71, reserved: 7, policy: 'ALLOW_BACKORDER', lowStockLevel: 9 },
+    categories: [{ category: { id: 'cat-frozen', slug: 'frozen', name: '냉동/간편식' } }],
+  },
+  {
+    id: 'fallback-6',
+    slug: 'serveq-coffee-syrup',
+    title: '카페 시럽 모음전',
+    excerpt: '음료 메뉴 확장용 베스트',
+    description: '카페 음료 메뉴에 잘 맞는 시럽 셀렉션입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '14900',
+    salePrice: '11900',
+    images: [{ url: 'https://images.unsplash.com/photo-1495474472287-4d71bcdd2085?auto=format&fit=crop&w=1200&q=80', alt: 'coffee syrup', position: 0 }],
+    inventory: { quantity: 58, reserved: 5, policy: 'ALLOW_BACKORDER', lowStockLevel: 7 },
+    categories: [{ category: { id: 'cat-drink', slug: 'drinks', name: '음료/시럽' } }],
+  },
+  {
+    id: 'fallback-7',
+    slug: 'serveq-business-pack',
+    title: '사업자 운영 패키지',
+    excerpt: '대량/정기배송 추천 상품',
+    description: '사업자 회원 대상 추천 구성 상품입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '32900',
+    salePrice: '28900',
+    images: [{ url: 'https://images.unsplash.com/photo-1483695028939-5bb13f8648b0?auto=format&fit=crop&w=1200&q=80', alt: 'business pack', position: 0 }],
+    inventory: { quantity: 36, reserved: 1, policy: 'ALLOW_BACKORDER', lowStockLevel: 4 },
+    categories: [{ category: { id: 'cat-business', slug: 'business', name: '사업자 추천' } }],
+  },
+  {
+    id: 'fallback-8',
+    slug: 'serveq-time-sale',
+    title: '타임세일 추천 상품',
+    excerpt: '기간 한정 운영 특가',
+    description: '운영 효율을 높이는 기간 한정 프로모션 상품입니다.',
+    status: 'PUBLISHED',
+    currency: 'KRW',
+    price: '19900',
+    salePrice: '14900',
+    images: [{ url: 'https://images.unsplash.com/photo-1512058564366-18510be2db19?auto=format&fit=crop&w=1200&q=80', alt: 'time sale', position: 0 }],
+    inventory: { quantity: 52, reserved: 6, policy: 'ALLOW_BACKORDER', lowStockLevel: 6 },
+    categories: [{ category: { id: 'cat-sale', slug: 'sale', name: '행사상품' } }],
+  },
+];
+
+const fallbackCategories = [
+  { id: 'cat-bakery', slug: 'bakery', name: '베이커리', description: '대표 베이커리 상품', count: 24 },
+  { id: 'cat-dessert', slug: 'dessert', name: '디저트', description: '디저트 셀렉션', count: 18 },
+  { id: 'cat-cafe', slug: 'cafe', name: '카페재료', description: '카페 운영 필수 상품', count: 32 },
+  { id: 'cat-box', slug: 'box-sale', name: '박스특가', description: '묶음 특가 상품', count: 14 },
+  { id: 'cat-frozen', slug: 'frozen', name: '냉동/간편식', description: '운영형 냉동 상품', count: 21 },
+  { id: 'cat-drink', slug: 'drinks', name: '음료/시럽', description: '음료 재료 모음', count: 17 },
+  { id: 'cat-business', slug: 'business', name: '사업자 추천', description: '사업자 대상 추천', count: 12 },
+  { id: 'cat-sale', slug: 'sale', name: '행사상품', description: '프로모션 상품', count: 9 },
+  { id: 'cat-sample', slug: 'sample', name: '샘플신청', description: '테스트용 샘플', count: 6 },
+  { id: 'cat-regular', slug: 'regular', name: '정기배송', description: '반복 구매 상품', count: 11 },
+];
+
+async function loadHomePageData(): Promise<{
+  collection: CollectionPageData;
+  categories: Array<{ id: string; slug: string; name: string; description?: string; count: number }>;
+}> {
+  try {
+    const [collection, categories] = await Promise.all([
+      getCatalogCollection({ page: 1, pageSize: 12 }),
+      getCategorySummaries(),
+    ]);
+
+    if (!collection?.items?.length || !categories?.length) {
+      return {
+        collection: {
+          title: '홈',
+          slug: 'home',
+          description: 'fallback collection',
+          items: fallbackProducts.map(mapProductSummary),
+          pagination: { page: 1, pageSize: 12, totalItems: fallbackProducts.length, totalPages: 1 },
+          filters: { categories: fallbackCategories.map(({ slug, name, count }) => ({ slug, name, count })) },
+        },
+        categories: fallbackCategories,
+      };
+    }
+
+    return { collection, categories };
+  } catch {
+    return {
+      collection: {
+        title: '홈',
+        slug: 'home',
+        description: 'fallback collection',
+        items: fallbackProducts.map(mapProductSummary),
+        pagination: { page: 1, pageSize: 12, totalItems: fallbackProducts.length, totalPages: 1 },
+        filters: { categories: fallbackCategories.map(({ slug, name, count }) => ({ slug, name, count })) },
+      },
+      categories: fallbackCategories,
+    };
+  }
+}
 
 function categoryHref(slug: string) {
   return `/categories/${slug}`;
 }
 
 export default async function HomePage() {
-  const [collection, categories] = await Promise.all([
-    getCatalogCollection({ page: 1, pageSize: 12 }),
-    getCategorySummaries(),
-  ]);
+  const { collection, categories } = await loadHomePageData();
 
   const featured = collection.items.slice(0, 8);
   const bestItems = collection.items.slice(4, 12);
