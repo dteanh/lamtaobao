@@ -11,3 +11,4 @@ coverage
 prisma/dev.db
 
 .secrets/
+.vercel

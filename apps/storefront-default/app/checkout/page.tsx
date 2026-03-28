@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import { cookies } from 'next/headers';
 import { getCartSummaryOrEmpty } from '@culi/core/cart';
 import { checkoutAction } from '../actions';
+import { SitePageFrame } from '../_components/site-shell';
 
 const errorMap: Record<string, string> = {
   CUSTOMER_NAME_REQUIRED: 'Thiếu họ tên.',
@@ -21,28 +22,67 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
   const message = params.error ? errorMap[params.error] ?? params.error : null;
 
   return (
-    <main style={{ padding: 24, maxWidth: 1080, margin: '0 auto' }}>
-      <h1>Checkout</h1>
-      {message ? <p style={{ color: 'crimson' }}>{message}</p> : null}
-      <p>Subtotal: {cart.subtotal.formatted}</p>
-      <p>Discount: {cart.discountTotal.formatted}</p>
-      <p>Total: {cart.total.formatted}</p>
-      <form action={checkoutAction} style={{ display: 'grid', gap: 12, maxWidth: 560 }}>
-        <input name="fullName" placeholder="Họ tên" required />
-        <input name="email" type="email" placeholder="Email" required />
-        <input name="phone" placeholder="Số điện thoại" />
-        <input name="line1" placeholder="Địa chỉ" required />
-        <input name="ward" placeholder="Phường/Xã" />
-        <input name="district" placeholder="Quận/Huyện" />
-        <input name="city" placeholder="Tỉnh/Thành phố" required />
-        <input name="postalCode" placeholder="Postal code" />
-        <select name="paymentMethod" defaultValue="COD">
-          <option value="COD">COD</option>
-          <option value="MANUAL_BANK_TRANSFER">Chuyển khoản thủ công</option>
-        </select>
-        <textarea name="notes" placeholder="Ghi chú" />
-        <button type="submit" disabled={cart.items.length === 0}>Đặt hàng</button>
-      </form>
-    </main>
+    <SitePageFrame title="주문서">
+      <section style={{ paddingTop: 32 }}>
+        <div style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
+          <div>
+            {message ? <p style={{ color: 'crimson' }}>{message}</p> : null}
+            <form action={checkoutAction} style={{ display: 'grid', gap: 18 }}>
+              <div style={{ border: '1px solid #e5e7eb', padding: 24 }}>
+                <h2 style={{ margin: '0 0 18px', fontSize: 26, fontWeight: 800 }}>배송 정보</h2>
+                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 14 }}>
+                  <input name="fullName" placeholder="Họ tên" required style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <input name="email" type="email" placeholder="Email" required style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <input name="phone" placeholder="Số điện thoại" style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <input name="city" placeholder="Tỉnh/Thành phố" required style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <input name="district" placeholder="Quận/Huyện" style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <input name="ward" placeholder="Phường/Xã" style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <input name="line1" placeholder="Địa chỉ" required style={{ gridColumn: '1 / -1', height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <input name="postalCode" placeholder="Postal code" style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
+                  <select name="paymentMethod" defaultValue="COD" style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }}>
+                    <option value="COD">COD</option>
+                    <option value="MANUAL_BANK_TRANSFER">Chuyển khoản thủ công</option>
+                  </select>
+                </div>
+                <textarea name="notes" placeholder="Ghi chú" style={{ marginTop: 14, minHeight: 120, border: '1px solid #d1d5db', padding: 14, width: '100%', boxSizing: 'border-box' }} />
+              </div>
+
+              <button
+                type="submit"
+                disabled={cart.items.length === 0}
+                style={{
+                  height: 56,
+                  border: 0,
+                  background: '#d91f29',
+                  color: '#fff',
+                  fontWeight: 800,
+                  fontSize: 16,
+                  cursor: cart.items.length === 0 ? 'not-allowed' : 'pointer',
+                }}
+              >
+                주문 완료하기
+              </button>
+            </form>
+          </div>
+
+          <aside>
+            <div style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
+              <h2 style={{ margin: '0 0 18px', fontSize: 24, fontWeight: 800 }}>주문 요약</h2>
+              <div style={{ display: 'grid', gap: 12, fontSize: 15 }}>
+                {cart.items.map((item) => (
+                  <div key={item.id} style={{ display: 'flex', justifyContent: 'space-between', gap: 12 }}>
+                    <span style={{ color: '#374151' }}>{item.title} × {item.quantity}</span>
+                    <strong>{item.lineTotal.formatted}</strong>
+                  </div>
+                ))}
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid #d1d5db' }}><span>Subtotal</span><strong>{cart.subtotal.formatted}</strong></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Discount</span><strong>{cart.discountTotal.formatted}</strong></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18 }}><span>Total</span><strong>{cart.total.formatted}</strong></div>
+              </div>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </SitePageFrame>
   );
 }

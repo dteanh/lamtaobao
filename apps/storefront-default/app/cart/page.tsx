@@ -3,6 +3,7 @@ export const dynamic = 'force-dynamic';
 import { cookies } from 'next/headers';
 import { getCartSummaryOrEmpty } from '@culi/core/cart';
 import { applyCouponAction, clearCouponAction, updateCartItemAction } from '../actions';
+import { SitePageFrame } from '../_components/site-shell';
 
 const errorMap: Record<string, string> = {
   INVALID_QUANTITY: 'Số lượng không hợp lệ.',
@@ -21,40 +22,97 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
   const message = params.error ? errorMap[params.error] ?? params.error : null;
 
   return (
-    <main style={{ padding: 24, maxWidth: 1080, margin: '0 auto' }}>
-      <h1>Giỏ hàng</h1>
-      {message ? <p style={{ color: 'crimson' }}>{message}</p> : null}
-      {cart.items.length === 0 ? (
-        <p>Chưa có sản phẩm.</p>
-      ) : (
-        <>
-          <ul>
-            {cart.items.map((item) => (
-              <li key={item.id} style={{ marginBottom: 16 }}>
-                <div>{item.title}</div>
-                <div>{item.lineTotal.formatted}</div>
-                <form action={updateCartItemAction}>
-                  <input type="hidden" name="itemId" value={item.id} />
-                  <input type="number" name="quantity" min={0} defaultValue={item.quantity} />
-                  <button type="submit">Cập nhật</button>
-                </form>
-              </li>
-            ))}
-          </ul>
-          <form action={applyCouponAction} style={{ display: 'flex', gap: 8, margin: '16px 0' }}>
-            <input name="code" placeholder="Coupon code" />
-            <button type="submit">Áp coupon</button>
-          </form>
-          <form action={clearCouponAction}>
-            <button type="submit">Bỏ coupon</button>
-          </form>
-          <p>Subtotal: {cart.subtotal.formatted}</p>
-          <p>Discount: {cart.discountTotal.formatted}</p>
-          <p>Shipping: {cart.shippingTotal.formatted}</p>
-          <p>Total: {cart.total.formatted}</p>
-          <a href="/checkout">Qua checkout</a>
-        </>
-      )}
-    </main>
+    <SitePageFrame title="장바구니">
+      <section style={{ paddingTop: 32 }}>
+        <div style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
+          <div>
+            {message ? <p style={{ color: 'crimson' }}>{message}</p> : null}
+            {cart.items.length === 0 ? (
+              <div style={{ padding: '60px 0', color: '#6b7280', fontSize: 16 }}>Chưa có sản phẩm.</div>
+            ) : (
+              <div style={{ borderTop: '2px solid #111827' }}>
+                {cart.items.map((item) => (
+                  <div
+                    key={item.id}
+                    style={{
+                      display: 'grid',
+                      gridTemplateColumns: '120px 1fr 140px 160px',
+                      gap: 20,
+                      alignItems: 'center',
+                      padding: '22px 0',
+                      borderBottom: '1px solid #e5e7eb',
+                    }}
+                  >
+                    <div
+                      style={{
+                        aspectRatio: '1 / 1',
+                        background: item.image?.url
+                          ? `center / cover no-repeat url(${item.image.url})`
+                          : 'linear-gradient(135deg, #e5e7eb 0%, #cbd5e1 100%)',
+                      }}
+                    />
+                    <div>
+                      <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>{item.title}</div>
+                      <div style={{ color: '#6b7280', fontSize: 14 }}>{item.unitPrice.formatted}</div>
+                    </div>
+                    <form action={updateCartItemAction} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                      <input type="hidden" name="itemId" value={item.id} />
+                      <input
+                        type="number"
+                        name="quantity"
+                        min={0}
+                        defaultValue={item.quantity}
+                        style={{ width: 88, height: 42, border: '1px solid #d1d5db', padding: '0 12px' }}
+                      />
+                      <button type="submit" style={{ height: 42, border: 0, background: '#111827', color: '#fff', padding: '0 14px', cursor: 'pointer' }}>
+                        변경
+                      </button>
+                    </form>
+                    <div style={{ textAlign: 'right', fontSize: 22, fontWeight: 800 }}>{item.lineTotal.formatted}</div>
+                  </div>
+                ))}
+              </div>
+            )}
+          </div>
+
+          <aside>
+            <div style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
+              <h2 style={{ margin: '0 0 18px', fontSize: 24, fontWeight: 800 }}>주문 요약</h2>
+              <div style={{ display: 'grid', gap: 12, fontSize: 15 }}>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Subtotal</span><strong>{cart.subtotal.formatted}</strong></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Discount</span><strong>{cart.discountTotal.formatted}</strong></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Shipping</span><strong>{cart.shippingTotal.formatted}</strong></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid #d1d5db', fontSize: 18 }}><span>Total</span><strong>{cart.total.formatted}</strong></div>
+              </div>
+
+              <form action={applyCouponAction} style={{ display: 'flex', gap: 8, margin: '20px 0 10px' }}>
+                <input name="code" placeholder="Coupon code" style={{ flex: 1, height: 44, border: '1px solid #d1d5db', padding: '0 12px' }} />
+                <button type="submit" style={{ width: 86, border: 0, background: '#111827', color: '#fff', fontWeight: 700, cursor: 'pointer' }}>적용</button>
+              </form>
+              <form action={clearCouponAction}>
+                <button type="submit" style={{ width: '100%', height: 42, border: '1px solid #d1d5db', background: '#fff', cursor: 'pointer' }}>쿠폰 제거</button>
+              </form>
+
+              <a
+                href="/checkout"
+                style={{
+                  marginTop: 18,
+                  display: 'block',
+                  height: 52,
+                  lineHeight: '52px',
+                  textAlign: 'center',
+                  textDecoration: 'none',
+                  background: '#d91f29',
+                  color: '#fff',
+                  fontWeight: 800,
+                }}
+              >
+                주문하기
+              </a>
+            </div>
+          </aside>
+        </div>
+      </section>
+    </SitePageFrame>
   );
 }
