@@ -6,6 +6,22 @@ type TxClient = {
   inventory: typeof prisma.inventory;
   inventoryReservation: typeof prisma.inventoryReservation;
 };
+
+type CartLine = {
+  id: string;
+  quantity: number;
+  unitPrice: { toString(): string } | string | number;
+  product: {
+    id: string;
+    slug: string;
+    title: string;
+    featuredImage?: { url: string; alt?: string | null } | null;
+    inventory?: { quantity: number; reserved: number; policy: 'DENY_BACKORDER' | 'ALLOW_BACKORDER' } | null;
+    categories?: Array<{ category: { slug: string } }>;
+  };
+};
+
+type CouponCartInputItem = { slug: string; quantity: number; categorySlugs?: string[] };
 import { err, ok, type AppResult } from '../shared/result';
 import {
   cleanupExpiredReservations,
@@ -94,7 +110,7 @@ export async function validateCartInventory(token: string) {
     return { ok: true as const, items: [] };
   }
 
-  const violations = cart.items.flatMap((item) => {
+  const violations = cart.items.flatMap((item: CartLine) => {
     const available = resolveAvailableQuantity(item.product.inventory);
     const policy = item.product.inventory?.policy ?? 'DENY_BACKORDER';
     if (policy === 'ALLOW_BACKORDER') return [];
@@ -114,9 +130,9 @@ export async function calculateCouponDiscount(input: { code?: string | null; sub
   if (coupon.endsAt && coupon.endsAt < now) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_EXPIRED' as const };
   if (coupon.usageLimit !== null && coupon.usageCount >= coupon.usageLimit) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_USAGE_LIMIT' as const };
   if (coupon.minimumSubtotal && input.subtotalAmount < Number(coupon.minimumSubtotal)) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_MINIMUM_NOT_MET' as const };
-  if (coupon.minimumQuantity && (input.items?.reduce((sum, item) => sum + item.quantity, 0) ?? 0) < coupon.minimumQuantity) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_MINIMUM_NOT_MET' as const };
-  if (coupon.appliesToProductSlug && !(input.items ?? []).some((item) => item.slug === coupon.appliesToProductSlug)) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_NOT_FOUND' as const };
-  if (coupon.appliesToCategorySlug && !(input.items ?? []).some((item) => item.categorySlugs?.includes(coupon.appliesToCategorySlug ?? ''))) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_NOT_FOUND' as const };
+  if (coupon.minimumQuantity && (input.items?.reduce((sum, item: CouponCartInputItem) => sum + item.quantity, 0) ?? 0) < coupon.minimumQuantity) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_MINIMUM_NOT_MET' as const };
+  if (coupon.appliesToProductSlug && !(input.items ?? []).some((item: CouponCartInputItem) => item.slug === coupon.appliesToProductSlug)) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_NOT_FOUND' as const };
+  if (coupon.appliesToCategorySlug && !(input.items ?? []).some((item: CouponCartInputItem) => item.categorySlugs?.includes(coupon.appliesToCategorySlug ?? ''))) return { valid: false as const, amount: 0, code: input.code, reason: 'COUPON_NOT_FOUND' as const };
   const rawAmount = coupon.type === 'PERCENTAGE' ? Math.floor((input.subtotalAmount * Number(coupon.value)) / 100) : Number(coupon.value);
   return { valid: true as const, amount: Math.max(0, Math.min(input.subtotalAmount, rawAmount)), code: coupon.code, reason: null };
 }
