@@ -2,7 +2,10 @@ import { prisma } from '@culi/db';
 import { recordInventoryMovement } from '../inventory';
 import type { CartRecord } from './types';
 
-type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
+type TxClient = {
+  inventory: typeof prisma.inventory;
+  inventoryReservation: typeof prisma.inventoryReservation;
+};
 
 type DbCart = {
   id: string;
