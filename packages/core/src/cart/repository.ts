@@ -2,6 +2,8 @@ import { prisma } from '@culi/db';
 import { recordInventoryMovement } from '../inventory';
 import type { CartRecord } from './types';
 
+type TxClient = Parameters<Parameters<typeof prisma.$transaction>[0]>[0];
+
 type DbCart = {
   id: string;
   token: string;
@@ -82,7 +84,7 @@ export async function getActiveCartState(token: string) {
 export async function cleanupExpiredReservations(now = new Date(), requestId = `reservation_cleanup_${Date.now()}`) {
   const expired = await prisma.inventoryReservation.findMany({ where: { expiresAt: { lt: now } } });
   if (expired.length === 0) return 0;
-  await prisma.$transaction(async (tx) => {
+  await prisma.$transaction(async (tx: TxClient) => {
     for (const reservation of expired) {
       const inventory = await tx.inventory.findUnique({ where: { productId: reservation.productId } });
       await tx.inventory.updateMany({ where: { productId: reservation.productId }, data: { reserved: { decrement: reservation.quantity } } });
