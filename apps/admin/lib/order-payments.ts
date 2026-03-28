@@ -1,6 +1,15 @@
 import { prisma } from '@culi/db';
 import { auditMutation } from '@culi/core/admin/mutation-audit';
 
+type OrderPaymentSnapshot = {
+  id: string;
+  status: string;
+  method: string;
+  amount: { toString(): string } | number;
+  transactionRef: string | null;
+  createdAt: Date;
+};
+
 export const ADMIN_PAYMENT_STATES = ['UNPAID', 'PENDING', 'PAID', 'FAILED', 'REFUNDED'] as const;
 export type AdminPaymentState = (typeof ADMIN_PAYMENT_STATES)[number];
 
@@ -42,10 +51,10 @@ export async function applyAdminOrderPaymentUpdate(input: {
 
   const before = {
     paymentState: deriveOrderPaymentState(order.payments),
-    payments: order.payments.map((payment) => ({ id: payment.id, status: payment.status, method: payment.method, amount: Number(payment.amount), transactionRef: payment.transactionRef, createdAt: payment.createdAt })),
+    payments: order.payments.map((payment: OrderPaymentSnapshot) => ({ id: payment.id, status: payment.status, method: payment.method, amount: Number(payment.amount), transactionRef: payment.transactionRef, createdAt: payment.createdAt })),
   };
 
-  const latestPaid = order.payments.find((payment) => payment.status === 'PAID');
+  const latestPaid = order.payments.find((payment: OrderPaymentSnapshot) => payment.status === 'PAID');
   const transactionRef = `admin_${input.paymentStatus.toLowerCase()}_${Date.now()}`;
 
   if (input.paymentStatus === 'REFUNDED' && !latestPaid) {
