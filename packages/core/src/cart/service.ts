@@ -37,7 +37,7 @@ import {
 } from './repository';
 import { recordInventoryMovement } from '../inventory';
 
-function toNumber(value: string) {
+function toNumber(value: string | number | { toString(): string }) {
   return Number(value);
 }
 
@@ -140,15 +140,15 @@ export async function calculateCouponDiscount(input: { code?: string | null; sub
 export async function getCartSummary(token: string): Promise<CartSummary> {
   const cart = await ensureCart(token);
   const cartState = await getActiveCartState(token);
-  const subtotalAmount = cart.items.reduce((sum, item) => sum + toNumber(item.unitPrice) * item.quantity, 0);
-  const coupon = await calculateCouponDiscount({ code: cart.couponCode, subtotalAmount, items: cartState?.items.map((item) => ({ slug: item.product.slug, quantity: item.quantity, categorySlugs: item.product.categories?.map((x) => x.category.slug) ?? [] })) ?? [] });
+  const subtotalAmount = cart.items.reduce((sum, item: CartLine) => sum + toNumber(item.unitPrice) * item.quantity, 0);
+  const coupon = await calculateCouponDiscount({ code: cart.couponCode, subtotalAmount, items: cartState?.items.map((item: CartLine) => ({ slug: item.product.slug, quantity: item.quantity, categorySlugs: item.product.categories?.map((x: { category: { slug: string } }) => x.category.slug) ?? [] })) ?? [] });
   const discountAmount = coupon.valid ? coupon.amount : 0;
   const shippingAmount = cart.items.length > 0 ? 30000 : 0;
   const totalAmount = Math.max(0, subtotalAmount - discountAmount + shippingAmount);
   return {
     id: cart.id,
     currency: cart.currency,
-    items: cart.items.map((item) => ({ id: item.id, productId: item.product.id, slug: item.product.slug, title: item.product.title, quantity: item.quantity, unitPrice: formatMoney(toNumber(item.unitPrice), cart.currency), lineTotal: formatMoney(toNumber(item.unitPrice) * item.quantity, cart.currency), image: item.product.featuredImage ? { url: item.product.featuredImage.url, alt: item.product.featuredImage.alt ?? undefined } : undefined })),
+    items: cart.items.map((item: CartLine) => ({ id: item.id, productId: item.product.id, slug: item.product.slug, title: item.product.title, quantity: item.quantity, unitPrice: formatMoney(toNumber(item.unitPrice), cart.currency), lineTotal: formatMoney(toNumber(item.unitPrice) * item.quantity, cart.currency), image: item.product.featuredImage ? { url: item.product.featuredImage.url, alt: item.product.featuredImage.alt ?? undefined } : undefined })),
     subtotal: formatMoney(subtotalAmount, cart.currency),
     discountTotal: formatMoney(discountAmount, cart.currency),
     shippingTotal: formatMoney(shippingAmount, cart.currency),
@@ -163,7 +163,7 @@ export async function addProductToCart(input: { token: string; productId: string
   const available = resolveAvailableQuantity(product.inventory);
   const policy = product.inventory?.policy ?? 'DENY_BACKORDER';
   const cart = await ensureCart(input.token);
-  const existing = cart.items.find((item) => item.product.id === input.productId)?.quantity ?? 0;
+  const existing = cart.items.find((item: CartLine) => item.product.id === input.productId)?.quantity ?? 0;
   if (policy !== 'ALLOW_BACKORDER' && existing + input.quantity > available) return err('INSUFFICIENT_STOCK');
   const activePrice = product.salePrice && Number(product.salePrice) < Number(product.price) ? Number(product.salePrice) : Number(product.price);
   await upsertCartItem({ token: input.token, productId: product.id, quantity: input.quantity, unitPrice: activePrice });
@@ -174,7 +174,7 @@ export async function addProductToCart(input: { token: string; productId: string
 export async function changeCartItemQuantity(input: { token: string; itemId: string; quantity: number; requestId?: string }): Promise<AppResult<CartSummary>> {
   if (input.quantity < 0 || !Number.isFinite(input.quantity)) return err('INVALID_QUANTITY');
   const cart = await getActiveCartState(input.token);
-  const line = cart?.items.find((item) => item.id === input.itemId);
+  const line = cart?.items.find((item: CartLine) => item.id === input.itemId);
   if (line && input.quantity > 0) {
     const available = resolveAvailableQuantity(line.product.inventory);
     const policy = line.product.inventory?.policy ?? 'DENY_BACKORDER';
@@ -188,8 +188,8 @@ export async function changeCartItemQuantity(input: { token: string; itemId: str
 export async function applyCouponToCart(input: { token: string; code: string }): Promise<AppResult<CartSummary>> {
   const cart = await ensureCart(input.token);
   const cartState = await getActiveCartState(input.token);
-  const subtotalAmount = cart.items.reduce((sum, item) => sum + toNumber(item.unitPrice) * item.quantity, 0);
-  const coupon = await calculateCouponDiscount({ code: input.code.trim().toUpperCase(), subtotalAmount, items: cartState?.items.map((item) => ({ slug: item.product.slug, quantity: item.quantity, categorySlugs: item.product.categories?.map((x) => x.category.slug) ?? [] })) ?? [] });
+  const subtotalAmount = cart.items.reduce((sum, item: CartLine) => sum + toNumber(item.unitPrice) * item.quantity, 0);
+  const coupon = await calculateCouponDiscount({ code: input.code.trim().toUpperCase(), subtotalAmount, items: cartState?.items.map((item: CartLine) => ({ slug: item.product.slug, quantity: item.quantity, categorySlugs: item.product.categories?.map((x: { category: { slug: string } }) => x.category.slug) ?? [] })) ?? [] });
   if (!coupon.valid) return err(coupon.reason || 'COUPON_NOT_FOUND');
   await setCartCouponCode(input.token, coupon.code);
   return ok(await getCartSummary(input.token));
