@@ -83,7 +83,7 @@ export async function applyAdminOrderPaymentUpdate(input: {
   const afterOrder = await prisma.order.findUnique({ where: { id: order.id }, include: { payments: { orderBy: { createdAt: 'desc' } } } });
   const after = {
     paymentState: deriveOrderPaymentState(afterOrder?.payments ?? []),
-    payments: (afterOrder?.payments ?? []).map((payment) => ({ id: payment.id, status: payment.status, method: payment.method, amount: Number(payment.amount), transactionRef: payment.transactionRef, createdAt: payment.createdAt })),
+    payments: (afterOrder?.payments ?? []).map((payment: OrderPaymentSnapshot) => ({ id: payment.id, status: payment.status, method: payment.method, amount: Number(payment.amount), transactionRef: payment.transactionRef, createdAt: payment.createdAt })),
   };
 
   await auditMutation({
