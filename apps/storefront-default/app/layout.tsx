@@ -321,12 +321,83 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               padding-top: 20px !important;
             }
 
+            .site-shell-header > a {
+              line-height: 1.35 !important;
+            }
+
+            .site-shell-header .header-main-row > div:nth-child(2) {
+              display: grid !important;
+              gap: 8px !important;
+            }
+
+            .site-shell-header .header-main-row > div:nth-child(2) > div:last-child {
+              margin-top: 2px !important;
+              row-gap: 6px !important;
+            }
+
+            .site-shell-header .header-main-row > div:last-child ul:last-child {
+              gap: 12px !important;
+            }
+
+            .site-shell-header .header-nav-row {
+              gap: 12px !important;
+            }
+
+            .site-shell-header .header-nav-row > div a,
+            .site-shell-header .header-nav-row > div span {
+              line-height: 1.3 !important;
+            }
+
+            .home-hero-card-main {
+              padding: 32px 24px !important;
+            }
+
+            .home-hero-card-main h1 {
+              font-size: 42px !important;
+              line-height: 1.06 !important;
+              max-width: 100% !important;
+            }
+
+            .home-hero-card-main p {
+              margin-top: 16px !important;
+              font-size: 18px !important;
+              line-height: 1.55 !important;
+              max-width: 100% !important;
+            }
+
+            .home-hero-card-side {
+              padding: 24px 20px !important;
+              min-height: 0 !important;
+            }
+
+            .home-hero-card-side > div:first-of-type + div > div:first-child > div:nth-child(2),
+            .home-hero-card-side > div:nth-child(2) > div:first-child > div:nth-child(2) {
+              font-size: 24px !important;
+              line-height: 1.18 !important;
+            }
+
+            .home-hero-card-side p {
+              margin-top: 12px !important;
+              font-size: 15px !important;
+              line-height: 1.55 !important;
+              max-width: 100% !important;
+            }
+
             .mobile-quick-zone > div > div:first-of-type,
             .mobile-featured-zone > div > div:nth-of-type(2) {
               display: grid !important;
               grid-template-columns: minmax(0, 1fr) !important;
               justify-content: stretch !important;
               gap: 10px !important;
+              text-align: left !important;
+            }
+
+            .mobile-quick-zone > div > div:nth-of-type(2),
+            .mobile-quick-zone > div > div:last-of-type {
+              display: grid !important;
+              grid-template-columns: minmax(0, 1fr) !important;
+              gap: 10px !important;
+              justify-content: stretch !important;
               text-align: left !important;
             }
 
@@ -345,18 +416,46 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               text-align: left !important;
             }
 
-            .mobile-featured-zone .home-product-list li a {
+            .mobile-featured-zone .home-product-list li a,
+            .home-best-list > a {
               display: grid !important;
               gap: 10px !important;
+              padding: 0 !important;
+              background: transparent !important;
             }
 
-            .mobile-featured-zone .home-product-list li a > div:last-child {
+            .mobile-featured-zone .home-product-list li a > div:last-child,
+            .home-best-list > a > div:last-child,
+            .home-best-list > a > div:nth-last-child(2),
+            .home-best-list > a > div:nth-last-child(3) {
               display: grid !important;
               gap: 0 !important;
             }
 
-            .mobile-featured-zone .home-product-list li a strong {
+            .mobile-featured-zone .home-product-list li a strong,
+            .home-best-list > a strong {
               font-size: 21px !important;
+            }
+
+            .mobile-featured-zone .home-product-list li a > div:last-child > div:nth-child(2),
+            .home-best-list > a > div:nth-child(3) {
+              min-height: 0 !important;
+              font-size: 18px !important;
+              line-height: 1.4 !important;
+            }
+
+            .mobile-featured-zone .home-product-list li a > div:last-child > div:nth-child(3),
+            .home-best-list > a > div:nth-child(4) {
+              min-height: 0 !important;
+              font-size: 13px !important;
+              line-height: 1.55 !important;
+            }
+
+            .mobile-featured-zone .home-product-list li a > div:last-child > div:last-child,
+            .home-best-list > a > div:last-child {
+              flex-wrap: wrap !important;
+              gap: 8px !important;
+              justify-content: flex-start !important;
             }
 
             .site-shell-header .header-main-row > div:first-child,
@@ -444,6 +543,26 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               justify-content: stretch !important;
             }
 
+            #categories > div > div:nth-of-type(5),
+            section[style*='padding: 92px 0 96px'] > div > div:nth-of-type(5) {
+              justify-content: flex-start !important;
+              gap: 8px !important;
+            }
+
+            #categories > div > div:last-of-type > a {
+              min-height: 0 !important;
+              padding: 20px 18px !important;
+            }
+
+            #categories > div > div:last-of-type > a > div:nth-child(3) {
+              font-size: 18px !important;
+              line-height: 1.35 !important;
+            }
+
+            #categories > div > div:last-of-type > a > div:nth-child(4) {
+              margin-top: 6px !important;
+            }
+
             .mobile-business-zone a {
               grid-template-columns: minmax(0, 1fr) !important;
               min-height: 0 !important;
@@ -497,6 +616,39 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               min-height: 0 !important;
             }
 
+            .mobile-promo-zone {
+              padding-top: 40px !important;
+            }
+
+            .mobile-promo-zone > div > div:nth-of-type(2) {
+              display: grid !important;
+              grid-template-columns: minmax(0, 1fr) !important;
+              gap: 10px !important;
+              text-align: left !important;
+            }
+
+            .mobile-promo-zone .home-promo-grid > a {
+              min-height: 0 !important;
+              padding: 24px 20px !important;
+              grid-template-columns: minmax(0, 1fr) !important;
+              gap: 16px !important;
+            }
+
+            .mobile-promo-zone .home-promo-grid > a > div:first-of-type > div:nth-child(2) {
+              font-size: 24px !important;
+              line-height: 1.24 !important;
+              margin-bottom: 10px !important;
+            }
+
+            .mobile-promo-zone .home-promo-grid > a > div:first-of-type > div:nth-child(3) {
+              font-size: 14px !important;
+              line-height: 1.6 !important;
+            }
+
+            .mobile-promo-zone .home-promo-grid > a > div:last-child {
+              justify-content: flex-start !important;
+            }
+
             .site-shell-footer .site-footer-middle,
             .site-shell-footer .site-footer-bottom > div,
             .site-shell-footer > div:first-child > div,
@@ -509,6 +661,17 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             .site-shell-footer .site-footer-middle {
               gap: 24px !important;
               padding-top: 24px !important;
+            }
+
+            .site-shell-footer > div:first-child > div,
+            .site-shell-footer > div:last-child > div,
+            .site-shell-footer .site-footer-bottom > div {
+              padding-left: 16px !important;
+              padding-right: 16px !important;
+            }
+
+            .site-shell-footer ul {
+              gap: 8px !important;
             }
           }
 
@@ -595,12 +758,35 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               margin-bottom: 8px !important;
             }
 
+            .home-hero-card-main {
+              padding: 24px 16px !important;
+            }
+
+            .home-hero-card-main h1 {
+              font-size: 32px !important;
+              line-height: 1.08 !important;
+            }
+
+            .home-hero-card-main p {
+              font-size: 15px !important;
+              line-height: 1.5 !important;
+            }
+
+            .home-hero-card-side {
+              padding: 20px 16px !important;
+            }
+
+            .home-hero-card-side p {
+              font-size: 14px !important;
+            }
+
             .quick-menu-grid a span:first-of-type {
               font-size: 14px !important;
               margin-bottom: 4px !important;
             }
 
             .mobile-featured-zone > div,
+            .mobile-promo-zone > div,
             #categories > div,
             section[style*='padding: 92px 0 96px'] > div,
             section[style*='padding: 28px 0 84px'] > div {
@@ -661,6 +847,24 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               font-size: 19px !important;
             }
 
+            .mobile-featured-zone .home-product-list li a > div:last-child > div:first-child,
+            .home-best-list > a > div:nth-child(2) {
+              margin-bottom: 6px !important;
+            }
+
+            .mobile-featured-zone .home-product-list li a > div:last-child > div:nth-child(4),
+            .home-best-list > a > div:nth-child(5) {
+              margin-top: 10px !important;
+              flex-wrap: wrap !important;
+            }
+
+            .mobile-featured-zone .home-product-list li a > div:last-child > div:nth-child(5),
+            .home-best-list > a > div:nth-child(6),
+            .mobile-featured-zone .home-product-list li a > div:last-child > div:nth-child(6),
+            .home-best-list > a > div:nth-child(7) {
+              display: none !important;
+            }
+
             .mobile-featured-zone .home-product-list li a button,
             .home-best-list > a > div:first-child > div:last-child {
               width: 40px !important;
@@ -696,6 +900,36 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             .mobile-service-zone > div > div:last-of-type > a > div:nth-child(4) {
               font-size: 13px !important;
               line-height: 1.6 !important;
+            }
+
+            .mobile-promo-zone .home-promo-grid > a {
+              padding: 20px 16px !important;
+            }
+
+            .mobile-promo-zone .home-promo-grid > a > div:first-of-type > div:nth-child(2) {
+              font-size: 20px !important;
+              line-height: 1.25 !important;
+            }
+
+            .mobile-promo-zone .home-promo-grid > a > div:last-child > div {
+              width: 96px !important;
+              height: 112px !important;
+            }
+
+            .site-shell-footer > div:first-child > div {
+              padding-top: 14px !important;
+              padding-bottom: 14px !important;
+            }
+
+            .site-shell-footer .site-footer-middle {
+              gap: 20px !important;
+              padding-top: 20px !important;
+              padding-bottom: 20px !important;
+            }
+
+            .site-shell-footer .site-footer-bottom > div {
+              gap: 10px !important;
+              font-size: 12px !important;
             }
 
             .site-shell-footer {

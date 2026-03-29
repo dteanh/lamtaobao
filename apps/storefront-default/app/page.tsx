@@ -642,7 +642,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section style={{ background: '#fff', paddingTop: 58 }}>
+      <section className="mobile-promo-zone" style={{ background: '#fff', paddingTop: 58 }}>
         <div style={{ width: 1472, margin: '0 auto' }}>
           <div style={{ height: 1, background: '#f1f5f9', marginBottom: 26 }} />
           <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', marginBottom: 18 }}>
