@@ -417,7 +417,7 @@ export default async function HomePage() {
             </div>
           </div>
 
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 18, marginTop: 12 }}>
+          <div className="mobile-hero-meta" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 18, marginTop: 12 }}>
             <div style={{ display: 'flex', alignItems: 'center', gap: 14 }}>
               <span style={{ fontSize: 12, fontWeight: 900, color: '#6b7280', letterSpacing: '0.08em' }}>MAIN VISUAL</span>
               <span style={{ fontSize: 13, fontWeight: 900, color: '#111827' }}>01</span>
@@ -435,7 +435,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section style={{ background: '#fff', paddingTop: 28 }}>
+      <section className="mobile-quick-zone" style={{ background: '#fff', paddingTop: 28 }}>
         <div style={{ width: 1472, margin: '0 auto', position: 'relative' }}>
           <span style={{ position: 'absolute', top: 0, left: 0, height: 32, padding: '0 14px', background: '#111827', color: '#fff', display: 'inline-flex', alignItems: 'center', fontSize: 12, fontWeight: 900, letterSpacing: '0.08em' }}>
             QUICK ZONE
@@ -503,7 +503,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section id="featured" style={{ paddingTop: 82, background: '#fff' }}>
+      <section id="featured" className="mobile-featured-zone" style={{ paddingTop: 82, background: '#fff' }}>
         <div style={{ width: 1472, margin: '0 auto', background: '#fcfcfc', padding: '32px 34px 36px', border: '1px solid #f1f5f9', position: 'relative' }}>
           <span style={{ position: 'absolute', top: -1, left: -1, height: 32, padding: '0 14px', background: '#111827', color: '#fff', display: 'inline-flex', alignItems: 'center', fontSize: 12, fontWeight: 900, letterSpacing: '0.08em' }}>
             FEATURED ZONE
