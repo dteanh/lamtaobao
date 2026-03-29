@@ -5,10 +5,12 @@ import { SitePageFrame } from '../../_components/site-shell';
 
 export default async function CategoryPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const collection = await getCatalogCollection({ page: 1, pageSize: 20, categorySlug: slug });
 
-  return (
-    <SitePageFrame title={collection.title} description={`총 ${collection.pagination.totalItems}개 상품`}>
+  try {
+    const collection = await getCatalogCollection({ page: 1, pageSize: 20, categorySlug: slug });
+
+    return (
+      <SitePageFrame title={collection.title} description={`총 ${collection.pagination.totalItems}개 상품`}>
       <section className="home-page-section" style={{ paddingTop: 34 }}>
         <div style={{ width: 1472, margin: '0 auto' }}>
           <div style={{ color: '#6b7280', fontSize: 14, marginBottom: 18 }}>
@@ -71,4 +73,15 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
       </section>
     </SitePageFrame>
   );
+  } catch {
+    return (
+      <SitePageFrame title="카테고리" description="일시적으로 카테고리 데이터를 불러오지 못했습니다.">
+        <section className="home-page-section" style={{ paddingTop: 34 }}>
+          <div style={{ width: 1472, margin: '0 auto', padding: '24px 0', color: '#6b7280', fontSize: 15 }}>
+            카테고리 정보를 잠시 불러오지 못했습니다. 잠시 후 다시 시도해주세요.
+          </div>
+        </section>
+      </SitePageFrame>
+    );
+  }
 }

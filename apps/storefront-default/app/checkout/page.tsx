@@ -17,12 +17,14 @@ const errorMap: Record<string, string> = {
 
 export default async function CheckoutPage({ searchParams }: { searchParams: Promise<{ error?: string }> }) {
   const token = (await cookies()).get('cartToken')?.value ?? 'guest-preview';
-  const cart = await getCartSummaryOrEmpty(token);
   const params = await searchParams;
   const message = params.error ? errorMap[params.error] ?? params.error : null;
 
-  return (
-    <SitePageFrame title="주문서">
+  try {
+    const cart = await getCartSummaryOrEmpty(token);
+
+    return (
+      <SitePageFrame title="주문서">
       <section className="home-page-section" style={{ paddingTop: 32 }}>
         <div className="checkout-layout flow-two-col" style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
           <div>
@@ -86,4 +88,15 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
       </section>
     </SitePageFrame>
   );
+  } catch {
+    return (
+      <SitePageFrame title="주문서" description="일시적으로 주문 정보를 불러오지 못했습니다.">
+        <section className="home-page-section" style={{ paddingTop: 32 }}>
+          <div style={{ width: 1472, margin: '0 auto', padding: '24px 0', color: '#6b7280', fontSize: 15 }}>
+            주문 정보를 잠시 불러오지 못했습니다. 잠시 후 다시 시도해주세요.
+          </div>
+        </section>
+      </SitePageFrame>
+    );
+  }
 }

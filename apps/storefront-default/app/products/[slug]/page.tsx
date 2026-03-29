@@ -7,14 +7,16 @@ import { SitePageFrame } from '../../_components/site-shell';
 
 export default async function ProductDetailPage({ params }: { params: Promise<{ slug: string }> }) {
   const { slug } = await params;
-  const product = await getCatalogProductDetail(slug);
 
-  if (!product) {
-    notFound();
-  }
+  try {
+    const product = await getCatalogProductDetail(slug);
 
-  return (
-    <SitePageFrame title={product.title} description={product.categories[0]?.name ?? '브랜드'}>
+    if (!product) {
+      notFound();
+    }
+
+    return (
+      <SitePageFrame title={product.title} description={product.categories[0]?.name ?? '브랜드'}>
       <section className="home-page-section" style={{ paddingTop: 24 }}>
         <div style={{ width: 1472, margin: '0 auto' }}>
           <div style={{ color: '#6b7280', fontSize: 14, marginBottom: 18 }}>
@@ -111,4 +113,15 @@ export default async function ProductDetailPage({ params }: { params: Promise<{ 
       </section>
     </SitePageFrame>
   );
+  } catch {
+    return (
+      <SitePageFrame title="상품 상세" description="일시적으로 상품 정보를 불러오지 못했습니다.">
+        <section className="home-page-section" style={{ paddingTop: 32 }}>
+          <div style={{ width: 1472, margin: '0 auto', padding: '24px 0', color: '#6b7280', fontSize: 15 }}>
+            상품 정보를 잠시 불러오지 못했습니다. 잠시 후 다시 시도해주세요.
+          </div>
+        </section>
+      </SitePageFrame>
+    );
+  }
 }
