@@ -19,7 +19,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             .site-shell-header > div,
             .site-shell-footer > div,
             .home-page-section > div,
-            .page-section-title > div {
+            .page-section-title > div,
+            .site-shell-main > section > div,
+            .site-page-frame > section > div {
               width: 100% !important;
               min-width: 0 !important;
               margin-left: 0 !important;
@@ -477,7 +479,9 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             .site-shell-header > div,
             .site-shell-footer > div,
             .home-page-section > div,
-            .page-section-title > div {
+            .page-section-title > div,
+            .site-shell-main > section > div,
+            .site-page-frame > section > div {
               padding-left: 12px !important;
               padding-right: 12px !important;
             }
@@ -570,6 +574,29 @@ export default function RootLayout({ children }: { children: ReactNode }) {
             #categories > div > div:last-of-type,
             section[style*='padding: 28px 0 84px'] > div > div:last-of-type {
               gap: 16px !important;
+            }
+
+            .home-product-list li,
+            .home-best-list > a,
+            .home-promo-grid > a,
+            #categories > div > div:last-of-type > a,
+            section[style*='padding: 28px 0 84px'] > div > div:last-of-type > a {
+              width: 100% !important;
+              min-width: 0 !important;
+              overflow: hidden !important;
+            }
+
+            .home-product-list li a > div:first-child,
+            .home-best-list > a > div:first-child {
+              margin-bottom: 12px !important;
+            }
+
+            .home-product-list li a > div:first-child > div:first-child,
+            .home-best-list > a > div:first-child > div:first-child {
+              width: 100% !important;
+              aspect-ratio: 1 / 1 !important;
+              background-size: cover !important;
+              background-position: center !important;
             }
 
             .mobile-featured-zone .home-product-list li a,
