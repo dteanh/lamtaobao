@@ -7,7 +7,7 @@ export function SiteHeader() {
   const hotKeywords = ['크로와상', '스콘', '쿠키', '냉동생지', '타임세일'];
 
   return (
-    <header style={{ backgroundColor: '#fff', position: 'relative', zIndex: 30 }}>
+    <header className="site-shell-header" style={{ backgroundColor: '#fff', position: 'relative', zIndex: 30 }}>
       <a
         href="/member/join.html"
         style={{
@@ -25,6 +25,7 @@ export function SiteHeader() {
 
       <div style={{ width: 1472, margin: '0 auto' }}>
         <div
+          className="header-main-row"
           style={{
             display: 'flex',
             alignItems: 'center',
@@ -183,6 +184,7 @@ export function SiteHeader() {
 
         <div style={{ position: 'relative' }}>
           <nav
+            className="header-nav-row"
             style={{
               display: 'flex',
               alignItems: 'stretch',
@@ -213,6 +215,7 @@ export function SiteHeader() {
                 <span>전체상품</span>
               </summary>
               <div
+                className="mega-panel"
                 style={{
                   display: 'grid',
                   gridTemplateColumns: '1fr 320px',
@@ -392,7 +395,7 @@ export function SiteFooter() {
   const paymentBadges = ['이니시스', '에스크로', '기업은행'];
 
   return (
-    <footer style={{ background: '#f7f7f7', borderTop: '1px solid #e5e7eb', paddingTop: 0 }}>
+    <footer className="site-shell-footer" style={{ background: '#f7f7f7', borderTop: '1px solid #e5e7eb', paddingTop: 0 }}>
       <div style={{ borderBottom: '1px solid #e5e7eb', background: '#fff' }}>
         <div style={{ width: 1472, margin: '0 auto', padding: '16px 0', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 14, flexWrap: 'wrap' }}>
@@ -430,7 +433,7 @@ export function SiteFooter() {
       </div>
 
       <div style={{ width: 1472, margin: '0 auto', paddingTop: 34 }}>
-        <div style={{ paddingBottom: 28, display: 'grid', gridTemplateColumns: '1.3fr 0.8fr 0.9fr', gap: 32, alignItems: 'start' }}>
+        <div className="site-footer-middle" style={{ paddingBottom: 28, display: 'grid', gridTemplateColumns: '1.3fr 0.8fr 0.9fr', gap: 32, alignItems: 'start' }}>
           <div style={{ position: 'relative' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', height: 28, padding: '0 12px', background: '#111827', color: '#fff', fontSize: 11, fontWeight: 900, letterSpacing: '0.08em', marginBottom: 12 }}>COMPANY</span>
             <div style={{ fontSize: 14, fontWeight: 900, color: '#d91f29', letterSpacing: '0.12em', marginBottom: 10 }}>SERVEQ</div>
@@ -520,7 +523,7 @@ export function SiteFooter() {
         </div>
       </div>
 
-      <div style={{ borderTop: '1px solid #e5e7eb', padding: '18px 0', background: '#efefef' }}>
+      <div className="site-footer-bottom" style={{ borderTop: '1px solid #e5e7eb', padding: '18px 0', background: '#efefef' }}>
         <div style={{ width: 1472, margin: '0 auto', display: 'flex', alignItems: 'center', justifyContent: 'space-between', gap: 20, flexWrap: 'wrap', fontSize: 13, color: '#6b7280' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: 12, flexWrap: 'wrap' }}>
             <span style={{ display: 'inline-flex', alignItems: 'center', height: 24, padding: '0 10px', background: '#111827', color: '#fff', fontSize: 11, fontWeight: 900, letterSpacing: '0.08em' }}>LEGAL</span>
@@ -544,7 +547,7 @@ export function SiteFooter() {
 
 export function PageSectionTitle({ title, description }: { title: string; description?: string }) {
   return (
-    <section style={{ borderBottom: '1px solid #e5e7eb', background: '#fafafa' }}>
+    <section className="page-section-title" style={{ borderBottom: '1px solid #e5e7eb', background: '#fafafa' }}>
       <div style={{ width: 1472, margin: '0 auto', padding: '36px 0' }}>
         <h1 style={{ margin: 0, fontSize: 38, fontWeight: 900, letterSpacing: '-0.04em' }}>{title}</h1>
         {description ? <p style={{ margin: '10px 0 0', color: '#6b7280', fontSize: 15 }}>{description}</p> : null}
@@ -555,7 +558,7 @@ export function PageSectionTitle({ title, description }: { title: string; descri
 
 export function SitePageFrame({ children, title, description }: { children: ReactNode; title?: string; description?: string }) {
   return (
-    <main style={{ minWidth: 1472, background: '#fff', paddingBottom: 80 }}>
+    <main className="site-page-frame" style={{ minWidth: 1472, background: '#fff', paddingBottom: 80 }}>
       <SiteHeader />
       {title ? <PageSectionTitle title={title} description={description} /> : null}
       {children}

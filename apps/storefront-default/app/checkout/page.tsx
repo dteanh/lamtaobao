@@ -23,14 +23,14 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
 
   return (
     <SitePageFrame title="주문서">
-      <section style={{ paddingTop: 32 }}>
-        <div style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
+      <section className="home-page-section" style={{ paddingTop: 32 }}>
+        <div className="checkout-layout flow-two-col" style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
           <div>
             {message ? <p style={{ color: 'crimson' }}>{message}</p> : null}
             <form action={checkoutAction} style={{ display: 'grid', gap: 18 }}>
               <div style={{ border: '1px solid #e5e7eb', padding: 24 }}>
                 <h2 style={{ margin: '0 0 18px', fontSize: 26, fontWeight: 800 }}>배송 정보</h2>
-                <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 14 }}>
+                <div className="checkout-fields" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 14 }}>
                   <input name="fullName" placeholder="Họ tên" required style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
                   <input name="email" type="email" placeholder="Email" required style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
                   <input name="phone" placeholder="Số điện thoại" style={{ height: 48, border: '1px solid #d1d5db', padding: '0 14px' }} />
@@ -66,7 +66,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
           </div>
 
           <aside>
-            <div style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
+            <div className="mobile-summary-box" style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
               <h2 style={{ margin: '0 0 18px', fontSize: 24, fontWeight: 800 }}>주문 요약</h2>
               <div style={{ display: 'grid', gap: 12, fontSize: 15 }}>
                 {cart.items.map((item) => (
@@ -77,6 +77,7 @@ export default async function CheckoutPage({ searchParams }: { searchParams: Pro
                 ))}
                 <div style={{ display: 'flex', justifyContent: 'space-between', paddingTop: 12, borderTop: '1px solid #d1d5db' }}><span>Subtotal</span><strong>{cart.subtotal.formatted}</strong></div>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Discount</span><strong>{cart.discountTotal.formatted}</strong></div>
+                <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Shipping</span><strong>{cart.shippingTotal.formatted}</strong></div>
                 <div style={{ display: 'flex', justifyContent: 'space-between', fontSize: 18 }}><span>Total</span><strong>{cart.total.formatted}</strong></div>
               </div>
             </div>

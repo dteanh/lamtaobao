@@ -27,6 +27,7 @@ export function mapProductSummary(record: ProductRecord): ProductSummary {
     badges: sale ? ['sale'] : [],
     stockStatus: quantity > 0 ? 'in_stock' : policy === 'ALLOW_BACKORDER' ? 'backorder' : 'out_of_stock',
     categorySlugs: record.categories.map((item: ProductRecord['categories'][number]) => item.category.slug),
+    categoryNames: record.categories.map((item: ProductRecord['categories'][number]) => item.category.name),
   };
 }
 

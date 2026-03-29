@@ -8,7 +8,7 @@ export default async function OrderSuccessPage({ searchParams }: { searchParams:
 
   return (
     <SitePageFrame title="주문 완료">
-      <section style={{ paddingTop: 48 }}>
+      <section className="home-page-section" style={{ paddingTop: 48 }}>
         <div style={{ width: 900, margin: '0 auto', textAlign: 'center' }}>
           <div
             style={{
@@ -29,7 +29,7 @@ export default async function OrderSuccessPage({ searchParams }: { searchParams:
           <h2 style={{ margin: 0, fontSize: 40, lineHeight: 1.2, letterSpacing: '-0.04em', fontWeight: 900 }}>주문이 정상적으로 접수되었습니다.</h2>
           <p style={{ margin: '16px 0 0', fontSize: 18, color: '#4b5563' }}>Mã đơn hàng của bạn là <strong>{params.orderNumber ?? 'N/A'}</strong></p>
 
-          <div style={{ marginTop: 34, border: '1px solid #e5e7eb', background: '#fafafa', padding: 28, textAlign: 'left' }}>
+          <div className="order-success-panel" style={{ marginTop: 34, border: '1px solid #e5e7eb', background: '#fafafa', padding: 28, textAlign: 'left' }}>
             <ul style={{ margin: 0, paddingLeft: 20, lineHeight: 2, color: '#374151' }}>
               <li>Lưu lại mã đơn để tra cứu về sau.</li>
               <li>Dùng đúng email đã checkout khi tra cứu đơn.</li>

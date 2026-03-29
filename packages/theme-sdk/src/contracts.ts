@@ -39,6 +39,7 @@ export type ProductSummary = {
   badges: string[];
   stockStatus: 'in_stock' | 'out_of_stock' | 'backorder';
   categorySlugs: string[];
+  categoryNames?: string[];
 };
 
 export type ProductDetail = ProductSummary & {

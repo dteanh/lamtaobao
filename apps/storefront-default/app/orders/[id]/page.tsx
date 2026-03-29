@@ -40,8 +40,8 @@ export default async function CustomerOrderPage({ params, searchParams }: { para
 
   return (
     <SitePageFrame title="주문 상세" description={`Mã đơn: ${order.orderNumber}`}>
-      <section style={{ paddingTop: 32 }}>
-        <div style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
+      <section className="home-page-section" style={{ paddingTop: 32 }}>
+        <div className="order-detail-layout flow-two-col" style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
           <div>
             <div style={{ border: '1px solid #e5e7eb', padding: 28, marginBottom: 24 }}>
               <div style={{ display: 'flex', gap: 8, flexWrap: 'wrap', marginBottom: 14 }}>
@@ -52,7 +52,7 @@ export default async function CustomerOrderPage({ params, searchParams }: { para
                   Payment {order.paymentState}
                 </span>
               </div>
-              <div style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 18, color: '#374151' }}>
+              <div className="order-meta-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(3, minmax(0, 1fr))', gap: 18, color: '#374151' }}>
                 <div>
                   <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 6 }}>주문번호</div>
                   <strong>{order.orderNumber}</strong>
@@ -86,6 +86,7 @@ export default async function CustomerOrderPage({ params, searchParams }: { para
               {order.items.map((item: CustomerOrderItem) => (
                 <div
                   key={item.id}
+                  className="order-item-line"
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr 120px 140px',
@@ -107,7 +108,7 @@ export default async function CustomerOrderPage({ params, searchParams }: { para
           </div>
 
           <aside>
-            <div style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
+            <div className="summary-box" style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
               <h2 style={{ margin: '0 0 18px', fontSize: 24, fontWeight: 800 }}>결제 요약</h2>
               <div style={{ display: 'grid', gap: 12, fontSize: 15 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Subtotal</span><strong>{order.subtotalFormatted}</strong></div>

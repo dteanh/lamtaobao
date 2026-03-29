@@ -13,8 +13,8 @@ export default async function OrderLookupPage({ searchParams }: { searchParams: 
 
   return (
     <SitePageFrame title="주문 조회" description="주문번호와 checkout 때 사용한 이메일로 주문을 조회합니다.">
-      <section style={{ paddingTop: 42 }}>
-        <div style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 420px', gap: 48, alignItems: 'start' }}>
+      <section className="home-page-section" style={{ paddingTop: 42 }}>
+        <div className="order-lookup-layout flow-two-col" style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 420px', gap: 48, alignItems: 'start' }}>
           <div>
             <div style={{ background: '#111827', color: '#fff', padding: '34px 36px' }}>
               <div style={{ color: '#fca5a5', fontSize: 13, fontWeight: 800, marginBottom: 8 }}>ORDER TRACKING</div>
@@ -27,7 +27,7 @@ export default async function OrderLookupPage({ searchParams }: { searchParams: 
             </div>
           </div>
 
-          <div style={{ border: '1px solid #e5e7eb', padding: 28, background: '#fff' }}>
+          <div className="form-card" style={{ border: '1px solid #e5e7eb', padding: 28, background: '#fff' }}>
             <h2 style={{ margin: '0 0 18px', fontSize: 26, fontWeight: 800 }}>주문번호 입력</h2>
             {message ? <p style={{ color: 'crimson', marginBottom: 14 }}>{message}</p> : null}
             <form action={lookupOrderAction} style={{ display: 'grid', gap: 12 }}>

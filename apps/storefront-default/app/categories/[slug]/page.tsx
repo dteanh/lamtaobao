@@ -9,12 +9,13 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
 
   return (
     <SitePageFrame title={collection.title} description={`총 ${collection.pagination.totalItems}개 상품`}>
-      <section style={{ paddingTop: 34 }}>
+      <section className="home-page-section" style={{ paddingTop: 34 }}>
         <div style={{ width: 1472, margin: '0 auto' }}>
           <div style={{ color: '#6b7280', fontSize: 14, marginBottom: 18 }}>
             <a href="/" style={{ color: '#6b7280', textDecoration: 'none' }}>홈</a> / <span>{slug}</span>
           </div>
           <div
+            className="category-grid"
             style={{
               display: 'grid',
               gridTemplateColumns: 'repeat(4, minmax(0, 1fr))',
@@ -50,8 +51,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ slug:
                     🛒
                   </div>
                 </div>
-                <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 8 }}>{item.categorySlugs[0] ?? slug}</div>
-                <div style={{ fontSize: 18, lineHeight: 1.45, fontWeight: 700, minHeight: 54 }}>{item.title}</div>
+                <div style={{ fontSize: 13, color: '#6b7280', marginBottom: 8 }}>{item.categoryNames?.[0] ?? item.categorySlugs[0] ?? slug}</div>
+                <div className="mobile-category-title" style={{ fontSize: 18, lineHeight: 1.45, fontWeight: 700, minHeight: 54 }}>{item.title}</div>
                 <div style={{ marginTop: 8, color: '#6b7280', fontSize: 14, minHeight: 42 }}>
                   {item.excerpt ?? '상세 페이지에서 상품 특징과 옵션을 확인하세요.'}
                 </div>

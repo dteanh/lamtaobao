@@ -133,9 +133,11 @@ const fallbackCategories = [
   { id: 'cat-regular', slug: 'regular', name: '정기배송', description: '반복 구매 상품', count: 11 },
 ];
 
+type HomeCategory = { id: string; slug: string; name: string; description?: string; count: number };
+
 async function loadHomePageData(): Promise<{
   collection: CollectionPageData;
-  categories: Array<{ id: string; slug: string; name: string; description?: string; count: number }>;
+  categories: HomeCategory[];
 }> {
   try {
     const [collection, categories] = await Promise.all([
@@ -182,8 +184,16 @@ export default async function HomePage() {
 
   const featured = collection.items.slice(0, 8);
   const bestItems = collection.items.slice(4, 12);
-  const quickCategories = categories.slice(0, 8);
-  const categoryMenu = categories.slice(0, 10);
+  const backendCategoryLinks: HomeCategory[] = collection.filters.categories.map((category) => ({
+    id: category.slug,
+    slug: category.slug,
+    name: category.name,
+    count: category.count ?? 0,
+    description: categories.find((item) => item.slug === category.slug)?.description,
+  }));
+  const homepageCategories = backendCategoryLinks.length ? backendCategoryLinks : categories;
+  const quickCategories = homepageCategories.slice(0, 8);
+  const categoryMenu = homepageCategories.slice(0, 10);
   const supportLinks = [
     { title: '정기배송', body: '자주 쓰는 식자재를\n편하게 받아보세요', href: '/' },
     { title: '대량구매', body: '매장·사업장용 수량도\n빠르게 상담해드려요', href: '/' },
@@ -254,12 +264,12 @@ export default async function HomePage() {
   ];
 
   return (
-    <main style={{ minWidth: 1472, background: '#fff' }}>
+    <main className="home-page-main site-shell-main" style={{ minWidth: 1472, background: '#fff' }}>
       <SiteHeader />
 
-      <section style={{ background: '#fff' }}>
+      <section className="home-page-section" style={{ background: '#fff' }}>
         <div style={{ width: 1472, margin: '0 auto', paddingTop: 14 }}>
-          <div style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 18 }}>
+          <div className="home-hero-grid" style={{ display: 'grid', gridTemplateColumns: '1fr 360px', gap: 18 }}>
             <div
               style={{
                 minHeight: 548,
@@ -275,6 +285,7 @@ export default async function HomePage() {
               </span>
               <a
                 href={heroCards[0].href}
+                className="home-hero-card-main"
                 style={{
                   textDecoration: 'none',
                   color: '#fff',
@@ -317,6 +328,7 @@ export default async function HomePage() {
                 </div>
                 <div style={{ position: 'relative', zIndex: 1, display: 'flex', alignItems: 'flex-end', justifyContent: 'flex-end' }}>
                   <div
+                    className="home-visual-art desktop-art"
                     style={{
                       width: 300,
                       height: 392,
@@ -351,6 +363,7 @@ export default async function HomePage() {
                 <a
                   key={card.title}
                   href={card.href}
+                  className="home-hero-card-side"
                   style={{
                     textDecoration: 'none',
                     color: '#fff',
@@ -439,6 +452,7 @@ export default async function HomePage() {
             <span style={{ fontSize: 14, color: '#6b7280', fontWeight: 700 }}>전체 카테고리 →</span>
           </div>
           <ul
+            className="quick-menu-grid"
             style={{
               margin: 0,
               padding: 0,
@@ -533,6 +547,7 @@ export default async function HomePage() {
           </div>
 
           <ul
+            className="home-product-list home-featured-grid"
             style={{
               listStyle: 'none',
               margin: 0,
@@ -637,11 +652,12 @@ export default async function HomePage() {
             </div>
             <span style={{ fontSize: 14, color: '#6b7280', fontWeight: 700 }}>기획전 전체보기 →</span>
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 24 }}>
+          <div className="home-promo-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(2, minmax(0, 1fr))', gap: 24 }}>
             {promoBanners.map((banner, index) => (
               <a
                 key={banner.title}
                 href="/"
+                className="home-promo-card"
                 style={{
                   textDecoration: 'none',
                   color: '#111827',
@@ -835,7 +851,7 @@ export default async function HomePage() {
               </span>
             ))}
           </div>
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 26 }}>
+          <div className="home-best-list home-best-grid" style={{ display: 'grid', gridTemplateColumns: 'repeat(4, minmax(0, 1fr))', gap: 26 }}>
             {bestItems.map((item, index) => (
               <a key={item.id} href={`/products/${item.slug}`} style={{ textDecoration: 'none', color: '#111827', display: 'block', background: '#fff', padding: 18 }}>
                 <div style={{ position: 'relative', marginBottom: 18 }}>

@@ -23,8 +23,8 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
 
   return (
     <SitePageFrame title="장바구니">
-      <section style={{ paddingTop: 32 }}>
-        <div style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
+      <section className="home-page-section" style={{ paddingTop: 32 }}>
+        <div className="cart-layout flow-two-col" style={{ width: 1472, margin: '0 auto', display: 'grid', gridTemplateColumns: '1fr 360px', gap: 36 }}>
           <div>
             {message ? <p style={{ color: 'crimson' }}>{message}</p> : null}
             {cart.items.length === 0 ? (
@@ -34,6 +34,7 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
                 {cart.items.map((item) => (
                   <div
                     key={item.id}
+                    className="cart-line"
                     style={{
                       display: 'grid',
                       gridTemplateColumns: '120px 1fr 140px 160px',
@@ -55,7 +56,7 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
                       <div style={{ fontSize: 18, fontWeight: 700, marginBottom: 8 }}>{item.title}</div>
                       <div style={{ color: '#6b7280', fontSize: 14 }}>{item.unitPrice.formatted}</div>
                     </div>
-                    <form action={updateCartItemAction} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
+                    <form className="mobile-inline-form" action={updateCartItemAction} style={{ display: 'flex', gap: 8, alignItems: 'center' }}>
                       <input type="hidden" name="itemId" value={item.id} />
                       <input
                         type="number"
@@ -76,7 +77,7 @@ export default async function CartPage({ searchParams }: { searchParams: Promise
           </div>
 
           <aside>
-            <div style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
+            <div className="mobile-summary-box" style={{ border: '1px solid #e5e7eb', padding: 24, background: '#fafafa' }}>
               <h2 style={{ margin: '0 0 18px', fontSize: 24, fontWeight: 800 }}>주문 요약</h2>
               <div style={{ display: 'grid', gap: 12, fontSize: 15 }}>
                 <div style={{ display: 'flex', justifyContent: 'space-between' }}><span>Subtotal</span><strong>{cart.subtotal.formatted}</strong></div>
