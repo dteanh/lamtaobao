@@ -907,7 +907,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section style={{ background: '#fff', padding: '56px 0 0' }}>
+      <section className="mobile-business-zone" style={{ background: '#fff', padding: '56px 0 0' }}>
         <div style={{ width: 1472, margin: '0 auto' }}>
           <a
             href="/"
@@ -1006,7 +1006,7 @@ export default async function HomePage() {
         </div>
       </section>
 
-      <section style={{ background: '#fff', padding: '28px 0 84px' }}>
+      <section className="mobile-service-zone" style={{ background: '#fff', padding: '28px 0 84px' }}>
         <div style={{ width: 1472, margin: '0 auto', background: '#fcfcfc', padding: '30px 34px 34px', border: '1px solid #f1f5f9', position: 'relative' }}>
           <span style={{ position: 'absolute', top: -1, left: -1, height: 32, padding: '0 14px', background: '#b45309', color: '#fff', display: 'inline-flex', alignItems: 'center', fontSize: 12, fontWeight: 900, letterSpacing: '0.08em' }}>
             SERVICE ZONE

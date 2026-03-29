@@ -444,18 +444,57 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               justify-content: stretch !important;
             }
 
-            section[style*='padding: 56px 0 0'] a {
+            .mobile-business-zone a {
               grid-template-columns: minmax(0, 1fr) !important;
               min-height: 0 !important;
             }
 
-            section[style*='padding: 56px 0 0'] a > div:first-child {
+            .mobile-business-zone a > div:first-child {
               padding: 28px 20px !important;
             }
 
-            section[style*='padding: 56px 0 0'] a > div:first-child > div:nth-of-type(4) {
+            .mobile-business-zone a > div:first-child > div:nth-of-type(4) {
               font-size: 28px !important;
               line-height: 1.25 !important;
+            }
+
+            .mobile-business-zone a > div:last-child {
+              min-height: 180px !important;
+              align-items: center !important;
+              padding: 28px 18px !important;
+            }
+
+            .mobile-business-zone a > div:last-child > div:last-child {
+              padding-bottom: 0 !important;
+              font-size: 26px !important;
+              line-height: 1.15 !important;
+            }
+
+            .mobile-service-zone {
+              padding-top: 36px !important;
+              padding-bottom: 52px !important;
+            }
+
+            .mobile-service-zone > div {
+              padding: 22px 18px !important;
+            }
+
+            .mobile-service-zone > div > div:nth-of-type(3),
+            .mobile-service-zone > div > div:nth-of-type(4) {
+              display: grid !important;
+              grid-template-columns: minmax(0, 1fr) !important;
+              gap: 10px !important;
+              justify-content: stretch !important;
+            }
+
+            .mobile-service-zone > div > div:last-of-type {
+              grid-template-columns: minmax(0, 1fr) !important;
+              gap: 14px !important;
+            }
+
+            .mobile-service-zone > div > div:last-of-type > a {
+              padding: 20px 16px !important;
+              min-height: 0 !important;
             }
 
             .site-shell-footer .site-footer-middle,
@@ -645,8 +684,18 @@ export default function RootLayout({ children }: { children: ReactNode }) {
               line-height: 1.6 !important;
             }
 
-            section[style*='padding: 56px 0 0'] a > div:first-child > div:nth-of-type(4) {
+            .mobile-business-zone a > div:first-child > div:nth-of-type(4) {
               font-size: 24px !important;
+            }
+
+            .mobile-service-zone > div > div:last-of-type > a > div:nth-child(3) {
+              font-size: 18px !important;
+              margin-bottom: 8px !important;
+            }
+
+            .mobile-service-zone > div > div:last-of-type > a > div:nth-child(4) {
+              font-size: 13px !important;
+              line-height: 1.6 !important;
             }
 
             .site-shell-footer {
